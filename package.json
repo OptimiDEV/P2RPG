@@ -1,0 +1,42 @@
+{
+  "name": "ai-rpg-adventure",
+  "version": "1.0.0",
+  "description": "AI RPG Adventure - A fantasy RPG with AI companion powered by Player2 technology",
+  "main": "src/rpg-main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder"
+  },
+  "keywords": ["rpg", "ai", "adventure", "player2", "electron"],
+  "author": "OptimiDev Studios",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "build": {
+    "appId": "com.optimidev.ai-rpg-adventure",
+    "productName": "AI RPG Adventure",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.games"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+} 

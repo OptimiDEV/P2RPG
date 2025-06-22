@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI RPG Adventure - by OptimiDev Studios</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .startup-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .startup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .game-logo {
+            text-align: center;
+            margin-bottom: 40px;
+            z-index: 10;
+        }
+
+        .game-title {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.3)); }
+            to { filter: drop-shadow(0 0 30px rgba(78, 205, 196, 0.5)); }
+        }
+
+        .game-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+            z-index: 10;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #4ecdc4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+        }
+
+        .loading-progress {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #45b7d1);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .loading-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .startup-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            max-width: 500px;
+            z-index: 10;
+        }
+
+        .info-title {
+            font-size: 1.3rem;
+            color: #4ecdc4;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .info-text {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff6b6b;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.connected {
+            background: #4ecdc4;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .floating-element:nth-child(4) {
+            top: 40%;
+            right: 30%;
+            animation-delay: 1s;
+        }
+
+        .floating-element:nth-child(5) {
+            bottom: 20%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .skip-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+
+        .skip-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .player2-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.5)); }
+            to { filter: drop-shadow(0 0 25px rgba(78, 205, 196, 0.7)); }
+        }
+
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1, #96ceb4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .studio-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.5)); }
+            to { filter: drop-shadow(0 0 25px rgba(78, 205, 196, 0.7)); }
+        }
+
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1, #96ceb4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .tech-partner {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        .logo-image {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(78, 205, 196, 0.3));
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.3)) drop-shadow(0 0 15px rgba(78, 205, 196, 0.3)); }
+            to { filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.5)) drop-shadow(0 0 25px rgba(78, 205, 196, 0.5)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="startup-container">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+
+        <button class="skip-button" onclick="skipStartup()">Skip</button>
+
+        <div class="game-logo">
+            <div class="studio-logo">
+                <img src="../assets/optimidev-logo.png" alt="OptimiDev Studios" class="logo-image">
+                <div class="logo-text">OptimiDev Studios</div>
+            </div>
+            <div class="game-subtitle">AI RPG Adventure</div>
+            <div class="tech-partner">Powered by Player2 Technology</div>
+        </div>
+
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loading-text">Initializing game...</div>
+            <div class="loading-progress">
+                <div class="loading-bar" id="loading-bar"></div>
+            </div>
+        </div>
+
+        <div class="startup-info">
+            <div class="info-title">Welcome to AI RPG Adventure</div>
+            <div class="info-text">
+                Embark on an epic fantasy journey with your AI companion! 
+                Explore magical worlds, solve quests, and make strategic decisions 
+                with the help of advanced AI technology powered by Player2.
+            </div>
+            
+            <div class="connection-status">
+                <div class="status-indicator" id="connection-indicator"></div>
+                <span id="connection-text">Connecting to Player2 API...</span>
+            </div>
+
+            <div class="info-text" style="font-size: 0.9rem; opacity: 0.7;">
+                <strong>Player2 App Required:</strong> Make sure Player2 App is running at <strong>http://127.0.0.1:4315</strong> for full AI features
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let progress = 0;
+        let loadingSteps = [
+            'Initializing AI RPG Adventure...',
+            'Loading Fantasy World...',
+            'Preparing AI Companion...',
+            'Setting up Character System...',
+            'Ready for Adventure!'
+        ];
+        let currentStep = 0;
+
+        function updateProgress(newProgress, step) {
+            progress = newProgress;
+            document.getElementById('loading-bar').style.width = progress + '%';
+            
+            if (step !== undefined && step < loadingSteps.length) {
+                document.getElementById('loading-text').textContent = loadingSteps[step];
+                currentStep = step;
+            }
+        }
+
+        function updateConnectionStatus(connected, message) {
+            const indicator = document.getElementById('connection-indicator');
+            const text = document.getElementById('connection-text');
+            
+            if (connected) {
+                indicator.classList.add('connected');
+                text.textContent = 'Connected to Player2 API';
+            } else {
+                indicator.classList.remove('connected');
+                text.textContent = message || 'Player2 API not available';
+            }
+        }
+
+        function skipStartup() {
+            // Direct navigation to game
+            window.location.href = 'rpg-game.html';
+        }
+
+        // Simulate loading progress
+        let step = 0;
+        const progressInterval = setInterval(() => {
+            if (step < loadingSteps.length) {
+                updateProgress((step / (loadingSteps.length - 1)) * 100, step);
+                step++;
+            } else {
+                clearInterval(progressInterval);
+                setTimeout(() => {
+                    // Direct navigation to game
+                    window.location.href = 'rpg-game.html';
+                }, 1000);
+            }
+        }, 800);
+
+        // Check Player2 API connection
+        setTimeout(async () => {
+            try {
+                if (window.player2API && window.player2API.checkHealth) {
+                    await window.player2API.checkHealth();
+                    updateConnectionStatus(true);
+                } else {
+                    // Fallback to fetch if IPC not available
+                    const response = await fetch('http://127.0.0.1:4315/v1/health', {
+                        method: 'GET',
+                        headers: {
+                            'player2-game-key': 'player2-game'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        updateConnectionStatus(true);
+                    } else {
+                        updateConnectionStatus(false, 'Player2 API not responding');
+                    }
+                }
+            } catch (error) {
+                updateConnectionStatus(false, 'Player2 API not available');
+            }
+        }, 2000);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI RPG Adventure - by OptimiDev Studios</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="rpg-styles.css">
+</head>
+<body>
+    <div class="rpg-container">
+        <!-- Header -->
+        <header class="rpg-header">
+            <div class="game-title">
+                <h1>🗡️ AI RPG Adventure</h1>
+                <span class="subtitle">by OptimiDev Studios</span>
+            </div>
+            <div class="header-controls">
+                <button id="save-btn" class="btn btn-secondary">💾 Save</button>
+                <button id="load-btn" class="btn btn-secondary">📂 Load</button>
+                <button id="new-game-btn" class="btn btn-primary">🆕 New Adventure</button>
+            </div>
+        </header>
+
+        <div class="rpg-main">
+            <!-- Left Panel - Character & Stats -->
+            <div class="left-panel">
+                <div class="character-section">
+                    <h2>👤 Your Character</h2>
+                    <div class="character-avatar" id="character-avatar">
+                        <div class="avatar-placeholder">🧙‍♂️</div>
+                    </div>
+                    <div class="character-info">
+                        <div class="char-name" id="char-name">Adventurer</div>
+                        <div class="char-level">Level <span id="char-level">1</span></div>
+                        <div class="char-class" id="char-class">Wanderer</div>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3>Stats</h3>
+                    <div class="stat-bars">
+                        <div class="stat-bar">
+                            <label>❤️ Health</label>
+                            <div class="bar-container">
+                                <div class="bar-fill health-bar" id="health-bar"></div>
+                                <span class="bar-text" id="health-text">100/100</span>
+                            </div>
+                        </div>
+                        <div class="stat-bar">
+                            <label>Stamina</label>
+                            <div class="bar-container">
+                                <div class="bar-fill stamina-bar" id="stamina-bar"></div>
+                                <span class="bar-text" id="stamina-text">100/100</span>
+                            </div>
+                        </div>
+                        <div class="stat-bar">
+                            <label>🍔 Hunger</label>
+                            <div class="bar-container">
+                                <div class="bar-fill hunger-bar" id="hunger-bar"></div>
+                                <span class="bar-text" id="hunger-text">100/100</span>
+                            </div>
+                        </div>
+                        <div class="stat-bar">
+                            <label>⭐ Experience</label>
+                            <div class="bar-container">
+                                <div class="bar-fill exp-bar" id="exp-bar"></div>
+                                <span class="bar-text" id="exp-text">0/100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="attributes-section">
+                    <h3>⚔️ Attributes</h3>
+                    <div class="attributes-grid">
+                        <div class="attribute">
+                            <span class="attr-label">Strength</span>
+                            <span class="attr-value" id="str-value">10</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attr-label">Dexterity</span>
+                            <span class="attr-value" id="dex-value">10</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attr-label">Intelligence</span>
+                            <span class="attr-value" id="int-value">10</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attr-label">Wisdom</span>
+                            <span class="attr-value" id="wis-value">10</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attr-label">Charisma</span>
+                            <span class="attr-value" id="cha-value">10</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attr-label">Constitution</span>
+                            <span class="attr-value" id="con-value">10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - World & Actions -->
+            <div class="center-panel">
+                <div class="world-section">
+                    <h2>🗺️ World</h2>
+                    <div class="location-display">
+                        <div class="location-name" id="location-name">Village of Eldoria</div>
+                        <div class="location-desc" id="location-desc">
+                            A peaceful village nestled in the rolling hills. The air is filled with the scent of fresh bread and the sound of children playing.
+                        </div>
+                    </div>
+                    
+                    <div class="world-map" id="world-map">
+                        <div class="map-grid">
+                            <div class="map-cell" data-x="3" data-y="2">🏘️</div>
+                            <!-- Map will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions-section">
+                    <h3>⚡ Actions</h3>
+                    <div class="action-buttons">
+                        <button class="action-btn" data-action="explore">🔍 Explore</button>
+                        <button class="action-btn" data-action="rest">😴 Rest</button>
+                        <button class="action-btn" data-action="craft">⚒️ Craft</button>
+                        <button class="action-btn" data-action="quest">📜 Quest</button>
+                        <button class="action-btn" data-action="shop">🏪 Shop</button>
+                        <button class="action-btn" data-action="travel">🚶 Travel</button>
+                        <button class="action-btn" data-action="discover">🧭 Discover Nearby</button>
+                    </div>
+                </div>
+
+                <div class="events-section">
+                    <h3>📖 Events</h3>
+                    <div class="events-log" id="events-log">
+                        <div class="event-entry">Welcome to your adventure! Your AI companion is ready to help you explore this magical world.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - AI Companion & Chat -->
+            <div class="right-panel">
+                <div class="companion-section">
+                    <h2>🤖 AI Companion</h2>
+                    <div class="companion-avatar" id="companion-avatar">
+                        <div class="avatar-placeholder">🤖</div>
+                    </div>
+                    <div class="companion-info">
+                        <div class="comp-name" id="comp-name">Aria</div>
+                        <div class="comp-role" id="comp-role">Mystic Guide</div>
+                        <div class="comp-status" id="comp-status">Ready to assist</div>
+                    </div>
+                </div>
+
+                <div class="chat-section">
+                    <h3>💬 Chat with Companion</h3>
+                    <div class="chat-container" id="chat-container">
+                        <div class="chat-message companion">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <div class="message-sender">Aria</div>
+                                <div class="message-text">Greetings, adventurer! I am Aria, your mystical guide. I'm here to help you navigate this world and make wise decisions. What would you like to do first?</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-section">
+                        <input type="text" id="chat-input" placeholder="Ask your companion for advice..." disabled>
+                        <button id="send-chat-btn" class="btn btn-primary" disabled>Send</button>
+                    </div>
+                </div>
+
+                <div class="voice-controls">
+                    <button id="tts-toggle" class="btn btn-secondary">🔊 TTS: ON</button>
+                    <!-- Fuck, this will not work <button id="voice-input-btn" class="btn btn-secondary">🎤 Voice Input</button>  -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Panel - Inventory & Equipment -->
+        <div class="bottom-panel">
+            <div class="inventory-section">
+                <h3>🎒 Inventory</h3>
+                <div class="inventory-grid" id="inventory-grid">
+                    <!-- Inventory slots will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="equipment-section">
+                <h3>⚔️ Equipment</h3>
+                <div class="equipment-slots" id="equipment-slots">
+                    <!-- Equipment slots will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="quest-section">
+                <h3>📜 Active Quests</h3>
+                <div class="quest-list" id="quest-list">
+                    <div class="quest-item">
+                        <div class="quest-title">Welcome to Adventure</div>
+                        <div class="quest-desc">Begin your journey and explore the world</div>
+                        <div class="quest-progress">0% Complete</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connection Status -->
+        <div class="connection-status">
+            <span id="connection-indicator" class="status-indicator">🔴 Disconnected</span>
+            <span>Player2 API Status</span>
+        </div>
+    </div>
+
+    <div id="welcome-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <div id="welcome-initial-view">
+                <h2>Welcome, Adventurer!</h2>
+                <p>Your journey awaits. Will you start a new adventure or continue a past one?</p>
+                <div class="modal-button-group">
+                    <button id="welcome-new-btn" class="btn btn-primary">New Adventure</button>
+                    <button id="welcome-load-btn" class="btn btn-secondary">Load Adventure</button>
+                </div>
+            </div>
+            <div id="welcome-name-view" style="display:none;">
+                <h2>Choose Your Name</h2>
+                <input type="text" id="player-name-input" placeholder="Enter your name..." maxlength="20" autofocus>
+                <button id="confirm-name-btn" class="btn btn-primary">Start Your Journey</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="village-map-overlay" class="village-map-overlay" style="display:none;">
+        <div class="village-map-content">
+            <button id="exit-village-btn" class="btn btn-secondary exit-village-btn">Exit Village</button>
+            <h2 class="village-title">Village of Eldoria</h2>
+            <div class="village-buildings">
+                <div class="building store" title="Store">🏪</div>
+                <div class="building house" title="House 1">🏠</div>
+                <div class="building house" title="House 2">🏡</div>
+                <div class="building inn" title="Inn">🏨</div>
+                <div class="building blacksmith" title="Blacksmith">⚒️</div>
+            </div>
+            <div class="village-npcs" id="village-npcs">
+                <!-- NPCs will be generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="rpg-game.js"></script>
+</body>
+</html> 
