@@ -79,7 +79,6 @@ game/
 │   └── optimidev-logo.png   # Studio logo
 ├── styles.css               # Global styles
 ├── package.json             # Project configuration
-└── start.sh                 # Launch script
 ```
 
 ### Development Mode
@@ -94,7 +93,7 @@ Build the game for distribution:
 npm run build
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Player2 API Integration
 The game integrates with Player2 API for:
