@@ -146,7 +146,7 @@ function createWindow() {
       enableRemoteModule: false,
       webSecurity: true
     },
-    title: 'AI RPG Adventure - by OptimiDev Studios',
+    title: 'P2RPG',
     icon: null,
     show: false,
     frame: true,
@@ -193,7 +193,7 @@ ipcMain.handle('get-player2-characters', async () => {
     const axios = require('axios');
     const response = await axios.get('http://127.0.0.1:4315/v1/selected_characters', {
       headers: {
-        'player2-game-key': 'ai-rpg-adventure'
+        'player2-game-key': 'P2RPG'
       }
     });
     return response.data;
@@ -208,7 +208,7 @@ ipcMain.handle('check-player2-health', async () => {
     const axios = require('axios');
     const response = await axios.get('http://127.0.0.1:4315/v1/health', {
       headers: {
-        'player2-game-key': 'ai-rpg-adventure'
+        'player2-game-key': 'P2RPG'
       }
     });
     return response.data;
@@ -223,7 +223,7 @@ ipcMain.handle('get-tts-voices', async () => {
     const axios = require('axios');
     const response = await axios.get('http://127.0.0.1:4315/v1/tts/voices', {
       headers: {
-        'player2-game-key': 'ai-rpg-adventure'
+        'player2-game-key': 'P2RPG'
       }
     });
     return response.data;
@@ -252,7 +252,7 @@ ipcMain.handle('send-message-to-ai', async (event, message, gameContext) => {
       ]
     }, {
       headers: {
-        'player2-game-key': 'ai-rpg-adventure',
+        'player2-game-key': 'P2RPG',
         'Content-Type': 'application/json'
       }
     });
@@ -268,7 +268,7 @@ ipcMain.handle('speak-text', async (event, payload) => {
     const axios = require('axios');
     const response = await axios.post('http://127.0.0.1:4315/v1/tts/speak', payload, {
       headers: {
-        'player2-game-key': 'ai-rpg-adventure',
+        'player2-game-key': 'P2RPG',
         'Content-Type': 'application/json'
       }
     });
@@ -285,7 +285,7 @@ ipcMain.handle('stop-speaking', async () => {
     const axios = require('axios');
     await axios.post('http://127.0.0.1:4315/v1/tts/stop', {}, {
       headers: {
-        'player2-game-key': 'ai-rpg-adventure'
+        'player2-game-key': 'P2RPG'
       }
     });
     return true;
@@ -299,8 +299,8 @@ ipcMain.handle('stop-speaking', async () => {
 ipcMain.handle('save-game', async (event, gameData) => {
   try {
     const saveData = {
-      version: '1.0.0',
-      game: 'AI RPG Adventure',
+      version: '1.0.0DEV',
+      game: 'P2RPG',
       developer: 'OptimiDev Studios',
       timestamp: new Date().toISOString(),
       data: gameData
@@ -308,9 +308,9 @@ ipcMain.handle('save-game', async (event, gameData) => {
 
     const result = await dialog.showSaveDialog(mainWindow, {
       title: 'Save Game',
-      defaultPath: path.join(app.getPath('documents'), 'AI RPG Adventure'),
+      defaultPath: path.join(app.getPath('documents'), 'P2RPG'),
       filters: [
-        { name: 'RPG Adventure Save Files', extensions: ['rp2game'] },
+        { name: 'P2RPG Saves', extensions: ['rp2game'] },
         { name: 'All Files', extensions: ['*'] }
       ],
       properties: ['createDirectory']
@@ -334,9 +334,9 @@ ipcMain.handle('load-game', async () => {
   try {
     const result = await dialog.showOpenDialog(mainWindow, {
       title: 'Load Game',
-      defaultPath: path.join(app.getPath('documents'), 'AI RPG Adventure'),
+      defaultPath: path.join(app.getPath('documents'), 'P2RPG Saves'),
       filters: [
-        { name: 'RPG Adventure Save Files', extensions: ['rp2game'] },
+        { name: 'P2RPG Saves', extensions: ['rp2game'] },
         { name: 'All Files', extensions: ['*'] }
       ],
       properties: ['openFile']
@@ -348,7 +348,7 @@ ipcMain.handle('load-game', async () => {
       const saveData = JSON.parse(fileContent);
       
       // Validate save file format
-      if (saveData.game !== 'AI RPG Adventure' || !saveData.data) {
+      if (saveData.game !== 'P2RPG Saves' || !saveData.data) {
         throw new Error('Invalid save file format');
       }
       
