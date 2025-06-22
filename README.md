@@ -1,6 +1,6 @@
-# 🗡️ AI RPG Adventure
+# R2RPG
 
-A fantasy RPG adventure game with an AI companion powered by Player2 technology. Developed by **OptimiDev Studios**.
+A fantasy RPG adventure game with an AI companion powered by Player2. Developed by **OptimiDev**.
 
 ## 🎮 Game Features
 
@@ -39,13 +39,7 @@ A fantasy RPG adventure game with an AI companion powered by Player2 technology.
    npm start
    ```
 
-   Or use the provided script:
-   ```bash
-   chmod +x start.sh
-   ./start.sh
-   ```
-
-## 🎯 How to Play
+## How to Play
 
 ### Character Creation
 - Start as a Level 1 Wanderer
@@ -69,7 +63,7 @@ A fantasy RPG adventure game with an AI companion powered by Player2 technology.
 - **Inventory**: Click on items to examine them
 - **Chat**: Type messages to interact with your AI companion
 
-## 🛠️ Development
+## Development
 
 ### Project Structure
 ```
@@ -168,3 +162,15 @@ This is a showcase project by OptimiDev Studios. For questions or feedback, plea
 
 **Developed with ❤️ by OptimiDev Studios**  
 **Powered by Player2 Technology** 
+<div style="
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  font-family: sans-serif;
+">
+   <a href="/docs/API.md">Modding -></a>
+</div>
