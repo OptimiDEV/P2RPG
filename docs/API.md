@@ -1,6 +1,6 @@
 # P2RPG Modding API
 
-Welcome to the P2RPG Modding API! This document explains how to create mods for the game, what you can do, and how to use the modding API.
+Welcome to the P2RPG Modding API! This document explains how to create mods for the game, what you can do, how to allow Player2 to interact with it, and how to use the modding API.
 
 ---
 
