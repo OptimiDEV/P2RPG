@@ -1,3 +1,11 @@
+⚠️ **WARNING: Project Archived**
+
+This project has been **archived** due to **suspicious recent activity by Player2**.
+
+We no longer trust the direction or actions of Player2 and have decided to discontinue development of P2RPG for the safety and integrity of our community.
+
+🔗 Learn more: [https://notplayer2.optimihost.com](https://notplayer2.optimihost.com)
+
 # R2RPG
 
 A fantasy RPG adventure game with an AI companion powered by Player2. Developed by **OptimiDev**.
